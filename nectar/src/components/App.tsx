@@ -1,8 +1,6 @@
-import { useState } from "react";
+import { UploadPhoto } from "./UploadPhoto/UploadPhoto";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <>
       <div
@@ -14,9 +12,7 @@ function App() {
           alignItems: "center",
         }}
       >
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
+        <UploadPhoto />
       </div>
     </>
   );
