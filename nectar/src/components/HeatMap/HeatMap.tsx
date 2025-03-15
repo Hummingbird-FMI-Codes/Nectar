@@ -11,7 +11,7 @@ export const HeatMap = memo(function HeatMap(props: { points: Location[] }) {
         width: "100%",
       }}
     >
-      <HeatMapBase width="100%" height="700px" points={props.points} />
+      <HeatMapBase width="100%" height="500px" points={props.points} />
     </div>
   );
 });

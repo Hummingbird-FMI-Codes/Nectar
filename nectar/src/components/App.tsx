@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { UploadPhoto } from "./UploadPhoto/UploadPhoto";
 import { ImageWithoutData } from "../types/ImageUpload";
 import { HeatMapBase } from "./HeatMap/BaseHeatMap";
@@ -6,11 +6,26 @@ import { FMI_location } from "./HeatMap/FMI_location";
 import { HeatMap } from "./HeatMap/HeatMap";
 import { ConvertImagesToBase64 } from "./ConvertImageToBase64/ConvertImagesToBase64";
 import { Black } from "../consts";
+import { ImageVisualisation } from "./ImageVisualisation/ImageVisualisation";
+import { Location } from "./HeatMap/types";
 
 function App() {
   const [images, setImages] = useState<ImageWithoutData[]>([]);
 
   const [heatmapPoints, setHeatmapPoints] = useState([FMI_location]);
+
+  const [currentImage, setCurrentImage] = useState<
+    ImageWithoutData | undefined
+  >();
+
+  const handleUpload = () => {
+    setCurrentImage(images[0]);
+    setImages(images.slice(1));
+  };
+
+  const setLocation = useCallback((location: Location) => {
+    setHeatmapPoints((points) => [...points, location]);
+  }, []);
 
   return (
     <div
@@ -24,21 +39,17 @@ function App() {
         flexDirection: "column",
       }}
     >
-      <UploadPhoto data={images} setData={setImages} />
+      <h2 style={{ color: "white" }}>Ant Radar</h2>
 
-      {/* <HeatMap points={heatmapPoints} /> */}
+      <UploadPhoto data={images} setData={setImages} upload={handleUpload} />
 
-      {/* <button
-        onClick={() => {
-          setHeatmapPoints([
-            ...heatmapPoints,
-            {
-              lat: FMI_location.lat + Math.random() * 0.0005,
-              lng: FMI_location.lng + Math.random() * 0.0005,
-            },
-          ]);
-        }}
-      /> */}
+      <ImageVisualisation
+        image={currentImage}
+        loadNext={handleUpload}
+        setLocation={setLocation}
+      />
+
+      <HeatMap points={heatmapPoints} />
     </div>
   );
 }

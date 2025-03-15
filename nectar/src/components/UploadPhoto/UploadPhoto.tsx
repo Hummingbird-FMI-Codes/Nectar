@@ -1,8 +1,7 @@
-import { memo, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { DropzoneOptions, useDropzone } from "react-dropzone";
 import "./UploadPhoto.css";
 import { ImageWithoutData } from "../../types/ImageUpload";
-import { Black } from "../../consts";
 
 const MaxImagePreview = 8;
 
@@ -10,6 +9,7 @@ export const UploadPhoto = memo(
   (props: {
     data: ImageWithoutData[];
     setData: (data: ImageWithoutData[]) => void;
+    upload: () => void;
   }) => {
     const [uploading, setUploading] = useState(false);
 
@@ -36,29 +36,15 @@ export const UploadPhoto = memo(
     } as unknown as DropzoneOptions);
 
     const handleUpload = async () => {
-      // TODO
-      // if (!files || !uploadedData)
-      //   return alert("Please upload both an image and JSON metadata.");
-      // const formData = new FormData();
-      // formData.append("file", files);
-      // formData.append("metadata", JSON.stringify(uploadedData)); // Convert JSON to a string
-      // setUploading(true);
-      // try {
-      //   const response = await axios.post(
-      //     "https://your-api.com/upload",
-      //     formData,
-      //     {
-      //       headers: { "Content-Type": "multipart/form-data" },
-      //     }
-      //   );
-      //   alert("Upload Successful! File URL: " + response.data.url);
-      // } catch (error) {
-      //   alert("Upload failed!");
-      //   console.error(error);
-      // } finally {
-      //   setUploading(false);
-      // }
+      setUploading(true);
+      props.upload();
     };
+
+    useEffect(() => {
+      if (uploading && !props.data.length) {
+        setUploading(false);
+      }
+    }, [!props.data.length && uploading]);
 
     return (
       <div
@@ -129,7 +115,7 @@ export const UploadPhoto = memo(
           >
             <button
               onClick={handleUpload}
-              disabled={!props.data || uploading}
+              disabled={!props.data.length || uploading}
               className="upload-button"
             >
               {uploading ? "Uploading..." : "Upload"}
