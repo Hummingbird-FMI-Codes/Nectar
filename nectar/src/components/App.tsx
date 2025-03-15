@@ -1,3 +1,4 @@
+import { ConvertImagesToBase64 } from "./ConvertImageToBase64/ConvertImagesToBase64";
 import { UploadPhoto } from "./UploadPhoto/UploadPhoto";
 
 function App() {
@@ -11,6 +12,7 @@ function App() {
         alignItems: "center",
       }}
     >
+      <ConvertImagesToBase64 />
       <UploadPhoto />
     </div>
   );

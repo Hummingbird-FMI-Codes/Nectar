@@ -1,0 +1,44 @@
+.upload-container {
+    width: 400px;
+    margin: 20px auto;
+    padding: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    text-align: center;
+    background-color: #f9f9f9;
+  }
+  
+  .dropzone {
+    border: 2px dashed #007bff;
+    padding: 24px;
+    cursor: pointer;
+    background-color: #ffffff;
+    transition: background-color 0.3s ease;
+  }
+  
+  .dropzone:hover {
+    background-color: #f0f8ff;
+  }
+  
+  .preview-image {
+    max-height: 100px;
+    margin: 10px auto;
+    display: block;
+  }
+  
+  .upload-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  
+  .upload-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }

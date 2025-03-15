@@ -7,6 +7,7 @@ export const UploadPhoto = memo(() => {
   const [preview, setPreview] = useState<string[]>([]);
   const [files, setFiles] = useState<File[]>([]);
   const [uploading, setUploading] = useState(false);
+  const [metadata, setMetadata] = useState<any>(null);
 
   const { getRootProps, getInputProps } = useDropzone({
     accept: { "image/*": [] },
@@ -17,12 +18,31 @@ export const UploadPhoto = memo(() => {
     },
   } as unknown as DropzoneOptions);
 
-  const handleUpload = async () => {
-    if (!files) return alert("No file selected!");
+  // Handle JSON file upload
+  const handleJSONUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const jsonFile = event.target.files?.[0];
+    if (!jsonFile) return;
 
-    // TODO FIXME: Replace this with your API endpoint
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const jsonData = JSON.parse(e.target?.result as string);
+        setMetadata(jsonData);
+      } catch (error) {
+        alert("Invalid JSON format");
+      }
+    };
+    reader.readAsText(jsonFile);
+  };
+
+  // Handle form submission (send JSON + Image)
+  const handleUpload = async () => {
+    if (!files || !metadata)
+      return alert("Please upload both an image and JSON metadata.");
+
     const formData = new FormData();
     formData.append("file", files);
+    formData.append("metadata", JSON.stringify(metadata)); // Convert JSON to a string
 
     setUploading(true);
 
@@ -35,10 +55,8 @@ export const UploadPhoto = memo(() => {
         }
       );
 
-      // TODO Remove
       alert("Upload Successful! File URL: " + response.data.url);
     } catch (error) {
-      // TODO Remove
       alert("Upload failed!");
       console.error(error);
     } finally {
@@ -48,6 +66,7 @@ export const UploadPhoto = memo(() => {
 
   return (
     <div className="upload-container">
+      <h3>Upload Photo</h3>
       <div {...getRootProps()} className="dropzone">
         <input {...(getInputProps() as any)} />
         {preview.length ? (
@@ -69,9 +88,22 @@ export const UploadPhoto = memo(() => {
         )}
       </div>
 
+      <input
+        type="file"
+        accept="application/json"
+        onChange={handleJSONUpload}
+        className="json-upload"
+      />
+      {metadata && (
+        <div className="metadata-preview">
+          <h3>Metadata Preview:</h3>
+          <pre>{JSON.stringify(metadata, null, 2)}</pre>
+        </div>
+      )}
+
       <button
         onClick={handleUpload}
-        disabled={!files || uploading}
+        disabled={!files || !metadata || uploading}
         className="upload-button"
       >
         {uploading ? "Uploading..." : "Upload"}
