@@ -1,6 +1,6 @@
 import { Location } from "./types";
 
 export const FMI_location: Location = {
-  lat: 60.192059,
-  lng: 24.945831,
+  lat: 42.6744307753915,
+  lng: 23.330485197338962,
 };
