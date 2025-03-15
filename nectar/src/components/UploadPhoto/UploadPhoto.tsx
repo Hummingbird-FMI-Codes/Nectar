@@ -2,6 +2,9 @@ import { memo, useState } from "react";
 import { DropzoneOptions, useDropzone } from "react-dropzone";
 import "./UploadPhoto.css";
 import { ImageWithoutData } from "../../types/ImageUpload";
+import { Black } from "../../consts";
+
+const MaxImagePreview = 8;
 
 export const UploadPhoto = memo(
   (props: {
@@ -58,38 +61,81 @@ export const UploadPhoto = memo(
     };
 
     return (
-      <div className="upload-container">
-        <h3>Upload Data</h3>
-        <div {...getRootProps()} className="dropzone">
-          <input {...(getInputProps() as any)} />
-          {props.data.length ? (
-            <>
-              <div style={{ flexDirection: "row" }} className="preview-images">
-                {props.data.slice(0, 3).map((image, index) => (
-                  <img
-                    key={index}
-                    src={image.image}
-                    alt="Preview"
-                    className="preview-image"
-                  />
-                ))}
-              </div>
-              {props.data.length > 4 && (
-                <p>{`+${props.data.length - 4} more`}</p>
-              )}
-            </>
-          ) : (
-            <p>Drag & drop an image or click to select</p>
-          )}
-        </div>
-
-        <button
-          onClick={handleUpload}
-          disabled={!props.data || uploading}
-          className="upload-button"
+      <div
+        style={{
+          width: "70%",
+        }}
+      >
+        <div
+          style={{
+            marginRight: "20px",
+            marginLeft: "20px",
+            paddingTop: "5px",
+            paddingBottom: "5px",
+            paddingLeft: "10px",
+            paddingRight: "10px",
+            borderRadius: "5px",
+            backgroundColor: "white",
+            display: "flex",
+            flexDirection: "row",
+          }}
         >
-          {uploading ? "Uploading..." : "Upload"}
-        </button>
+          <div {...getRootProps()} className="dropzone">
+            <input {...(getInputProps() as any)} />
+            {props.data.length ? (
+              <>
+                <div style={{ display: "flex", flexDirection: "row" }}>
+                  {props.data.slice(0, MaxImagePreview).map((image, index) => (
+                    <img
+                      key={index}
+                      src={image.image}
+                      alt="Preview"
+                      className="preview-image"
+                    />
+                  ))}
+                  {props.data.length > MaxImagePreview && (
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <p>{`+${props.data.length - MaxImagePreview} more`}</p>
+                    </div>
+                  )}
+                </div>
+              </>
+            ) : (
+              <p
+                style={{
+                  textAlign: "center",
+                  alignContent: "center",
+                  flexGrow: 1,
+                }}
+              >
+                Drag & drop an image or click to select
+              </p>
+            )}
+          </div>
+
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <button
+              onClick={handleUpload}
+              disabled={!props.data || uploading}
+              className="upload-button"
+            >
+              {uploading ? "Uploading..." : "Upload"}
+            </button>
+          </div>
+        </div>
       </div>
     );
   }

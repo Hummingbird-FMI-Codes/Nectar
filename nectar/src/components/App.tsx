@@ -1,9 +1,11 @@
 import { useState } from "react";
-import { ConvertImagesToBase64 } from "./ConvertImageToBase64/ConvertImagesToBase64";
 import { UploadPhoto } from "./UploadPhoto/UploadPhoto";
 import { ImageWithoutData } from "../types/ImageUpload";
 import { HeatMapBase } from "./HeatMap/BaseHeatMap";
 import { FMI_location } from "./HeatMap/FMI_location";
+import { HeatMap } from "./HeatMap/HeatMap";
+import { ConvertImagesToBase64 } from "./ConvertImageToBase64/ConvertImagesToBase64";
+import { Black } from "../consts";
 
 function App() {
   const [images, setImages] = useState<ImageWithoutData[]>([]);
@@ -13,28 +15,20 @@ function App() {
   return (
     <div
       style={{
-        backgroundColor: "lightblue",
-        width: "100vw", // Full width of viewport
-        height: "100vh", // Full height of viewport
+        backgroundColor: Black,
+        width: "100vw",
+        height: "100vh",
+        justifyContent: "center",
+        alignItems: "center",
         display: "flex",
-        justifyContent: "center", // Centers horizontally
-        alignItems: "center", // Centers vertically
+        flexDirection: "column",
       }}
     >
-      {/* <ConvertImagesToBase64 />
-      <UploadPhoto data={images} setData={setImages} /> */}
+      <UploadPhoto data={images} setData={setImages} />
 
-      <div
-        style={{
-          backgroundColor: "white",
-          padding: "20px",
-          width: "100%",
-        }}
-      >
-        <HeatMapBase width="100%" height="700px" points={heatmapPoints} />
-      </div>
+      {/* <HeatMap points={heatmapPoints} /> */}
 
-      <button
+      {/* <button
         onClick={() => {
           setHeatmapPoints([
             ...heatmapPoints,
@@ -44,7 +38,7 @@ function App() {
             },
           ]);
         }}
-      />
+      /> */}
     </div>
   );
 }
