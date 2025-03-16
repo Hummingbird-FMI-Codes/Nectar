@@ -1,4 +1,4 @@
-import { memo, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { ImageWithoutData } from "../../types/ImageUpload";
 import { Black } from "../../consts";
 import loaderGif from "../../assets/loader.gif";
@@ -6,9 +6,33 @@ import dislike from "../../assets/dislike.png";
 import like from "../../assets/like.png";
 import { Location } from "../HeatMap/types";
 import { FMI_location } from "../HeatMap/FMI_location";
+import { URL_MODEL } from "../../env/url";
 
 export const ImageSize = 500;
 export const LoaderSize = 50;
+
+function base64ToFile(base64String: string, fileName = "upload.jpg") {
+  // Split out the mime type from the base64 data
+  const arr = base64String.split(",");
+  const mimeMatch = arr[0].match(/:(.*?);/);
+  if (!mimeMatch) {
+    throw new Error("Invalid base64 string. Could not extract MIME type.");
+  }
+  const mime = mimeMatch[1]; // e.g. "image/png"
+
+  // Decode the actual base64 data
+  const base64Data = arr[1];
+  const byteString = atob(base64Data);
+  const byteStringLength = byteString.length;
+  const u8arr = new Uint8Array(byteStringLength);
+
+  for (let i = 0; i < byteStringLength; i++) {
+    u8arr[i] = byteString.charCodeAt(i);
+  }
+
+  // Create a File with the decoded data
+  return new File([u8arr], fileName, { type: mime });
+}
 
 export const ImageVisualisation = function ImageVisualisation(props: {
   image: ImageWithoutData | undefined;
@@ -22,9 +46,35 @@ export const ImageVisualisation = function ImageVisualisation(props: {
       return;
     }
 
-    // TODO BE CALL
-    setTimeout(() => {
-      const hasAnt = Math.random() > 0.5;
+    const fetchData = async () => {
+      if (!props.image) {
+        return;
+      }
+
+      const file = base64ToFile(props.image.image, "upload.jpg");
+
+      const formData = new FormData();
+      formData.append("image", file);
+      formData.append("timestamp", new Date().toISOString());
+      formData.append("lat", props.image.meta.location.lat.toString());
+      formData.append("lng", props.image.meta.location.lng.toString());
+
+      const response = await fetch(`${URL_MODEL}/image`, {
+        method: "POST",
+        body: formData,
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+
+          return data.caption === "ANTS";
+        })
+        .catch(() => {
+          return false;
+        });
+
+      const hasAnt = response ?? false;
+
       setHasAnt(hasAnt);
       if (hasAnt) {
         props.setLocation({
@@ -37,7 +87,9 @@ export const ImageVisualisation = function ImageVisualisation(props: {
         setHasAnt(undefined);
         props.loadNext();
       }, 3000);
-    }, 3000);
+    };
+
+    fetchData();
   }, [props.image]);
 
   return (

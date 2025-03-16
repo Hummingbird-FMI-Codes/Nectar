@@ -1,8 +1,10 @@
+import { Location } from "../components/HeatMap/types";
+
 export type ImageWithoutData = {
   id: number;
   image: string;
   meta: {
-    location: string;
+    location: Location;
     data: string;
   };
 };

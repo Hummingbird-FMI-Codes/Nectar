@@ -7,6 +7,7 @@ import { Black } from "../consts";
 import { ImageVisualisation } from "./ImageVisualisation/ImageVisualisation";
 import { Location } from "./HeatMap/types";
 import { Preview } from "./UploadPhoto/Preview";
+import { ConvertImagesToBase64 } from "./ConvertImageToBase64/ConvertImagesToBase64";
 
 function App() {
   const [images, setImages] = useState<ImageWithoutData[]>([]);
