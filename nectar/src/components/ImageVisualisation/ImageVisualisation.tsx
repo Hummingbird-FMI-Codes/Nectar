@@ -65,9 +65,7 @@ export const ImageVisualisation = function ImageVisualisation(props: {
       })
         .then((res) => res.json())
         .then((data) => {
-          console.log(data);
-
-          return data.caption === "ANTS";
+          return !!data.external_response.specimen;
         })
         .catch(() => {
           return false;
