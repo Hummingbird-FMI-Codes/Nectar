@@ -12,7 +12,7 @@ import { ConvertImagesToBase64 } from "./ConvertImageToBase64/ConvertImagesToBas
 function App() {
   const [images, setImages] = useState<ImageWithoutData[]>([]);
 
-  const [heatmapPoints, setHeatmapPoints] = useState([FMI_location]);
+  const [heatmapPoints, setHeatmapPoints] = useState([]);
 
   const [currentImage, setCurrentImage] = useState<
     ImageWithoutData | undefined
@@ -28,7 +28,7 @@ function App() {
   };
 
   const setLocation = useCallback((location: Location) => {
-    setHeatmapPoints((points) => [...points, location]);
+    // setHeatmapPoints((points) => [...points, location]);
   }, []);
 
   return (
