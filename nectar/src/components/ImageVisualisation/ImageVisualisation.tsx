@@ -7,8 +7,8 @@ import like from "../../assets/like.png";
 import { Location } from "../HeatMap/types";
 import { FMI_location } from "../HeatMap/FMI_location";
 
-const Size = 250;
-const LoaderSize = 30;
+export const ImageSize = 500;
+export const LoaderSize = 50;
 
 export const ImageVisualisation = memo(function ImageVisualisation(props: {
   image: ImageWithoutData | undefined;
@@ -43,10 +43,12 @@ export const ImageVisualisation = memo(function ImageVisualisation(props: {
   return (
     <div
       style={{
-        marginTop: "20px",
-        width: `${Size}px`,
-        height: `${Size + LoaderSize + 30}px`,
+        width: `${ImageSize}px`,
+        height: `${ImageSize + LoaderSize + 30}px`,
+        minWidth: `${ImageSize + 30}px`,
         display: "flex",
+        marginRight: "20px",
+        marginLeft: "30px",
         justifyContent: "center",
         alignItems: "center",
       }}
@@ -56,9 +58,9 @@ export const ImageVisualisation = memo(function ImageVisualisation(props: {
           <img
             src={props.image.image}
             style={{
-              maxWidth: `${Size}px`,
-              maxHeight: `${Size}px`,
-              borderRadius: `${Size}px`,
+              maxWidth: `${ImageSize}px`,
+              maxHeight: `${ImageSize}px`,
+              borderRadius: `5px`,
               border: `10px solid ${
                 hasAnt ? "#1BC47D" : hasAnt === false ? "#FA6464" : Black
               }`,
