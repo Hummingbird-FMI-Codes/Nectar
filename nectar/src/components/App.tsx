@@ -19,7 +19,11 @@ function App() {
 
   const handleUpload = () => {
     setCurrentImage(images[0]);
+  };
+
+  const loadNext = () => {
     setImages(images.slice(1));
+    setCurrentImage(images[1]);
   };
 
   const setLocation = useCallback((location: Location) => {
@@ -46,7 +50,7 @@ function App() {
         {currentImage ? (
           <ImageVisualisation
             image={currentImage}
-            loadNext={handleUpload}
+            loadNext={loadNext}
             setLocation={setLocation}
           />
         ) : (

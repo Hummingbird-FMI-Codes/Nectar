@@ -1,4 +1,4 @@
-import { memo, use, useEffect, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import { ImageWithoutData } from "../../types/ImageUpload";
 import { Black } from "../../consts";
 import loaderGif from "../../assets/loader.gif";
@@ -10,7 +10,7 @@ import { FMI_location } from "../HeatMap/FMI_location";
 export const ImageSize = 500;
 export const LoaderSize = 50;
 
-export const ImageVisualisation = memo(function ImageVisualisation(props: {
+export const ImageVisualisation = function ImageVisualisation(props: {
   image: ImageWithoutData | undefined;
   loadNext: () => void;
   setLocation: (location: Location) => void;
@@ -88,4 +88,4 @@ export const ImageVisualisation = memo(function ImageVisualisation(props: {
       ) : null}
     </div>
   );
-});
+};

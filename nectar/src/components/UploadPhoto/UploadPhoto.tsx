@@ -27,7 +27,9 @@ export const UploadPhoto = memo(
               event.target?.result as string
             ) as ImageWithoutData[];
 
-            props.setData(images);
+            props.setData(
+              images.map((image, index) => ({ ...image, id: index }))
+            );
           } catch (error) {
             alert("Invalid JSON format.");
           }

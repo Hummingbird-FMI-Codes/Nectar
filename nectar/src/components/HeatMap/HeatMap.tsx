@@ -1,4 +1,4 @@
-import { memo, use, useEffect, useRef, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { HeatMapBase } from "./BaseHeatMap";
 import { Location } from "./types";
 import { ImageSize } from "../ImageVisualisation/ImageVisualisation";
